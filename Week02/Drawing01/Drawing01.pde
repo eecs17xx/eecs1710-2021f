@@ -6,15 +6,12 @@ void setup() {
   background(bgColor);
 }
 
-void draw() {
-  rectMode(CORNER);
-  fill(bgColor, 5);
-  rect(0, 0, width, height);
-  
-  ellipseMode(CENTER);
-  rectMode(CENTER);
-  fill(0, 127, 255);
-  stroke(255, 0, 0);
-  line(mouseX, mouseY, pmouseX, pmouseY);
-  rect(mouseX, mouseY, circleSize, circleSize);
+void draw() {  
+  if (mousePressed) {
+    rectMode(CENTER);
+    fill(0, 127, 255);
+    stroke(255, 0, 0);
+    line(mouseX, mouseY, pmouseX, pmouseY);
+    rect(mouseX, mouseY, circleSize, circleSize);
+  }
 }
