@@ -12,7 +12,6 @@ void setup() {
 }
 
 void draw() {
-  image(forest, x, y, forest.width * (height / forest.height), height);
   x += speedX;
   if (x > width || x < 0) {
     speedX *= -1;
@@ -22,7 +21,9 @@ void draw() {
   if (x > width) {
     speedX *= -1;
   } else if (x < 0) {
-    speedX = abs(speedX);
+    speedX *= -1;
   }
   */
+
+  image(forest, x, y, forest.width * (height / forest.height), height);
 }
