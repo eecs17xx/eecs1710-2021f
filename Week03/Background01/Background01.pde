@@ -14,7 +14,15 @@ void setup() {
 void draw() {
   image(forest, x, y, forest.width * (height / forest.height), height);
   x += speedX;
-  if (x > width) {
-    x = width/2;
+  if (x > width || x < 0) {
+    speedX *= -1;
   }
+  /*
+  // you can also do it this way:
+  if (x > width) {
+    speedX *= -1;
+  } else if (x < 0) {
+    speedX = abs(speedX);
+  }
+  */
 }
