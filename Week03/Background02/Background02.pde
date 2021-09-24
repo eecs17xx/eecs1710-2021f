@@ -13,19 +13,13 @@ void setup() {
 
 void draw() {
   background(0, 127, 255);
+    
+  for (int i=0; i<3; i++) {
+    x += speedX;
+    image(forest, x + (i * 100), y + (i * 50), forest.width * (height / forest.height), height);
+  }
   
-  x += speedX;
   if (x > width || x < 0) {
     speedX *= -1;
-  }
-  /*
-  // you can also do it this way:
-  if (x > width) {
-    speedX *= -1;
-  } else if (x < 0) {
-    speedX *= -1;
-  }
-  */
-
-  image(forest, x, y, forest.width * (height / forest.height), height);
+  }  
 }
