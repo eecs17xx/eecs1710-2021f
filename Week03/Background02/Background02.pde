@@ -11,7 +11,7 @@ void setup() {
   x1 = width/2;
   y1 = height/2;
   x2 = x1 + 50;
-  y2 = y1 + 50;
+  y2 = y1 - 50;
   speedX1 = 5;
   speedX2 = speedX1 * 0.5;
 }
@@ -19,17 +19,17 @@ void setup() {
 void draw() {
   background(0, 127, 255);
     
-  image(forest, x1, y1);
+  tint(255, 127);
   image(forest, x2, y2);
+  
+  noTint();
+  image(forest, x1, y1); // the image drawn last will be in front
   
   x1 += speedX1;
   x2 += speedX2;
     
   if (x1 > width || x1 < 0) {
-    speedX1 *= -1;
-  }
-  
-  if (x2 > width || x2 < 0) {
+    speedX1 *= -1;  
     speedX2 *= -1;
   }
 }
