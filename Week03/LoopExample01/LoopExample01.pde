@@ -12,6 +12,7 @@ void draw() {
   for (int i=0; i<10; i++) {
     float x = random(width);
     float y = random(height);
+    
     for (int j=0; j<10; j++) {
       float x2 = x + j;
       float y2 = y + j * 10;
