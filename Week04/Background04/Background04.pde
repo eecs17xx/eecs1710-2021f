@@ -1,6 +1,13 @@
 PImage forest;
-PVector p1, p2;
-float speedX1, speedX2;
+
+int numBgs = 100;
+float xOffset = 40;
+float yOffset = 0.3;
+float startingSpeed = 2;
+float speedIncrement = 0.5;
+
+PVector[] positions = new PVector[numBgs];
+float[] speeds = new float[numBgs];
 
 void setup() {
   size(800, 600, P2D);
@@ -8,27 +15,23 @@ void setup() {
   forest.resize(forest.width * (height / forest.height), height);
   imageMode(CENTER);
   
-  p1 = new PVector(width/2, height/2);
-  p2 = new PVector(p1.x + 50, p1.y - 50);
-  
-  speedX1 = 5;
-  speedX2 = speedX1 * 0.5;
+  for (int i=0; i<numBgs; i++) {
+    positions[i] = new PVector(width/2 + (i * xOffset), height/2 + (i * yOffset));
+    speeds[i] = startingSpeed + (i * speedIncrement);
+  }
 }
 
 void draw() {
   background(0, 127, 255);
     
-  tint(255, 127);
-  image(forest, p2.x, p2.y);
-  
-  noTint();
-  image(forest, p1.x, p1.y); // the image drawn last will be in front
-  
-  p1.x += speedX1;
-  p2.x += speedX2;
+  for (int i=0; i<numBgs; i++) {
+    tint(255, (255 / numBgs) * i);
+    image(forest, positions[i].x, positions[i].y);
+   
+    positions[i].x += speeds[i];
     
-  if (p1.x > width || p1.x < 0) {
-    speedX1 *= -1;  
-    speedX2 *= -1;
+    if (positions[0].x > width || positions[0].x < 0) {
+      speeds[i] *= -1;
+    }
   }
 }
