@@ -6,8 +6,10 @@ int timeout = 3000;
 float triggerDistance1 = 100;
 float triggerDistance2 = 5;
 float movementSpeed = 0.08;
-boolean debug = false;
+boolean debug = true;
 boolean isBlinking = false;
+int blinkMarkTime = 0;
+int blinkTimeout = 200;
 
 void setup() { 
   size(800, 600, P2D);
@@ -45,8 +47,11 @@ void draw() {
       target = new PVector(random(width), random(height));
     }
   } else if (!isBothered && millis() > markTime + timeout) {
-    if (millis() % 10 == 0) {
+    if (!isBlinking && millis() > blinkMarkTime) {
       isBlinking = true;
+      blinkMarkTime = millis();
+    } else if (isBlinking && millis() > blinkMarkTime + blinkTimeout) {
+      isBlinking = false;
     }
 
     if (isBlinking) {
@@ -62,6 +67,7 @@ void draw() {
 
   if (debug) {
     noFill();
+    stroke(0, 255, 0);
     ellipse(position.x, position.y, triggerDistance1*2, triggerDistance1*2);
     ellipse(position.x, position.y, triggerDistance2*2, triggerDistance2*2);
     line(target.x, target.y, position.x, position.y);
