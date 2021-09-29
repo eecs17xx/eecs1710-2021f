@@ -1,21 +1,27 @@
+boolean debug = true;
 PVector position, target;
-boolean isBothered = false;
 PImage faceCurrent, face01, face02, face03, face04;
-int markTime = 0;
-int timeout = 3000;
+float margin = 50;
+
+boolean isBothered = false;
+int botheredMarkTime = 0;
+int botheredTimeout = 3000; // Processing measures time in milliseconds
+float botheredSpread = 5;
+
+boolean isBlinking = false;
+int blinkMarkTime = 0;
+int blinkTimeout = 4000;
+int blinkDuration = 250;
+
 float triggerDistance1 = 100;
 float triggerDistance2 = 5;
 float movementSpeed = 0.08;
-boolean debug = true;
-boolean isBlinking = false;
-int blinkMarkTime = 0;
-int blinkTimeout = 200;
 
 void setup() { 
   size(800, 600, P2D);
   
   position = new PVector(width/2, height/2);
-  target = new PVector(random(width), random(height));  
+  pickTarget();
   
   face01 = loadImage("face01.png");
   face01.resize(face01.width/3, face01.height/3);
@@ -40,26 +46,26 @@ void draw() {
   isBothered = position.dist(mousePos) < triggerDistance1;
   
   if (isBothered) {
-    markTime = millis();
+    botheredMarkTime = millis();
     faceCurrent = face02; // worried expression
-    position = position.lerp(target, movementSpeed);
+    position = position.lerp(target, movementSpeed).add(new PVector(random(-botheredSpread, botheredSpread), random(-botheredSpread, botheredSpread)));
     if (position.dist(target) < triggerDistance2) {
-      target = new PVector(random(width), random(height));
+      pickTarget();
     }
-  } else if (!isBothered && millis() > markTime + timeout) {
-    if (!isBlinking && millis() > blinkMarkTime) {
+  } else if (!isBothered && millis() > botheredMarkTime + botheredTimeout) {
+    if (!isBlinking && millis() > blinkMarkTime + blinkTimeout) {
       isBlinking = true;
       blinkMarkTime = millis();
-    } else if (isBlinking && millis() > blinkMarkTime + blinkTimeout) {
+    } else if (isBlinking && millis() > blinkMarkTime + blinkDuration) {
       isBlinking = false;
     }
 
     if (isBlinking) {
-      faceCurrent = face04; // happy expression
+      faceCurrent = face04; // blink with happy expression
     } else {
       faceCurrent = face03; // happy expression
     }
-  } else {
+  } else if (!isBothered && millis() > botheredMarkTime + botheredTimeout/6) {
     faceCurrent = face01; // neutral expression
   }
 
@@ -73,4 +79,8 @@ void draw() {
     line(target.x, target.y, position.x, position.y);
     rect(target.x, target.y, 10, 10);
   }
+}
+
+void pickTarget() {
+  target = new PVector(random(margin, width-margin), random(margin, height-margin));
 }
