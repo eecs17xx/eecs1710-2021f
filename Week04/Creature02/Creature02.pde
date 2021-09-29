@@ -64,10 +64,12 @@ void draw() {
       faceCurrent = face04; // blink with happy expression
     } else {
       faceCurrent = face03; // happy expression
-    }
+    }    
   } else if (!isBothered && millis() > botheredMarkTime + botheredTimeout/6) {
     faceCurrent = face01; // neutral expression
   }
+
+  position.y += sin(millis()) / 2;
 
   image(faceCurrent, position.x, position.y);
 
@@ -77,6 +79,7 @@ void draw() {
     ellipse(position.x, position.y, triggerDistance1*2, triggerDistance1*2);
     ellipse(position.x, position.y, triggerDistance2*2, triggerDistance2*2);
     line(target.x, target.y, position.x, position.y);
+    stroke(255, 0, 0);
     rect(target.x, target.y, 10, 10);
   }
 }
