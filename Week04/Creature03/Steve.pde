@@ -19,8 +19,9 @@ class Steve {
   float triggerDistance2 = 5;
   float movementSpeed = 0.08;
     
-  Steve() {
-    position = new PVector(width/2, height/2);
+  // This is the constructor; it needs to have the same name as the class.
+  Steve(float x, float y) {
+    position = new PVector(x, y);
     pickTarget();
     
     face01 = loadImage("face01.png");
@@ -35,11 +36,7 @@ class Steve {
     faceCurrent = face01;
   }
   
-  void draw() {    
-    ellipseMode(CENTER);
-    rectMode(CENTER);
-    imageMode(CENTER);
-    
+  void update() {
     PVector mousePos = new PVector(mouseX, mouseY);
     isBothered = position.dist(mousePos) < triggerDistance1;
     
@@ -68,6 +65,12 @@ class Steve {
     }
   
     position.y += sin(millis()) / 2;
+  }
+  
+  void draw() {    
+    ellipseMode(CENTER);
+    rectMode(CENTER);
+    imageMode(CENTER);
   
     image(faceCurrent, position.x, position.y);
   
@@ -80,6 +83,11 @@ class Steve {
       stroke(255, 0, 0);
       rect(target.x, target.y, 10, 10);
     }
+  }
+  
+  void run() {
+    update();
+    draw();
   }
   
   void pickTarget() {
