@@ -1,12 +1,16 @@
 class Steve {
 
-  boolean debug = true;
+  SteveMode mode;
+  boolean debug = false;
   PVector position, target, mousePos;
   PImage faceCurrent, face01, face02, face03, face04;
   float margin = 50;
   int foodChoice;
   Eye eyeL, eyeR;
   float eyeSize = 40;
+  int eyeMarkTime = 0;
+  int eyeTimeout = 200;
+  float eyeAngle = 0;
   
   boolean isBothered = false;
   int botheredMarkTime = 0;
@@ -23,9 +27,11 @@ class Steve {
   float triggerDistance1 = 100;
   float triggerDistance2 = 25;
   float movementSpeed = 0.08;
-    
+      
   // This is the constructor; it needs to have the same name as the class.
   Steve(float x, float y) {
+    mode = SteveMode.NEUTRAL;
+    
     position = new PVector(x, y);
     eyeL = new Eye(-45, -20, eyeSize);
     eyeR = new Eye(45, -20, eyeSize);
@@ -41,26 +47,34 @@ class Steve {
     face04 = loadImage("face04.png");
     face04.resize(face01.width, face01.height);
     
-    faceCurrent = face01;
+    faceCurrent = face01;    
   }
   
   void update() {
+    int t = millis();
+    
     mousePos = new PVector(mouseX, mouseY);
     
+    if (t > eyeMarkTime + eyeTimeout) {
+      eyeMarkTime = t;
+      eyeAngle = atan2(mouseY - position.y, mouseX - position.x);
+    }
+
+
     isBothered = position.dist(mousePos) < triggerDistance1;
     
     if (isBothered) {
       isHunting = false;
-      botheredMarkTime = millis();
+      botheredMarkTime = t;
       faceCurrent = face02; // worried expression
       if (position.dist(target) < triggerDistance2) {
         pickEscapeTarget();
       }
-    } else if (!isBothered && millis() > botheredMarkTime + botheredTimeout) {
-      if (!isBlinking && millis() > blinkMarkTime + blinkTimeout) {
+    } else if (!isBothered && t > botheredMarkTime + botheredTimeout) {
+      if (!isBlinking && t > blinkMarkTime + blinkTimeout) {
         isBlinking = true;
-        blinkMarkTime = millis();
-      } else if (isBlinking && millis() > blinkMarkTime + blinkDuration) {
+        blinkMarkTime = t;
+      } else if (isBlinking && t > blinkMarkTime + blinkDuration) {
         isBlinking = false;
       }
   
@@ -75,7 +89,7 @@ class Steve {
         pickFoodTarget();
         isHunting = true;
       }
-    } else if (!isBothered && millis() > botheredMarkTime + botheredTimeout/6) {
+    } else if (!isBothered && t > botheredMarkTime + botheredTimeout/6) {
       faceCurrent = face01; // neutral expression
     }
   
@@ -88,7 +102,7 @@ class Steve {
       pickFoodTarget();
     }
     
-    position.y += sin(millis()) / 2;
+    position.y += sin(t) / 2;
   }
   
   void draw() {    
@@ -99,9 +113,10 @@ class Steve {
     pushMatrix();
     translate(position.x, position.y);
     image(faceCurrent, 0, 0);
-    if (!isBlinking) {
-      eyeL.run();
-      eyeR.run();
+
+    if (!isBlinking && !isBothered) {
+      eyeL.run(eyeAngle);
+      eyeR.run(eyeAngle);
     }
     popMatrix();
   
@@ -132,4 +147,11 @@ class Steve {
     }
   }
   
+}
+
+enum SteveMode {
+  NEUTRAL,
+  BOTHERED,
+  HUNTING,
+  HAPPY
 }

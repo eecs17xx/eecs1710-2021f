@@ -1,4 +1,4 @@
-int numSteves = 1;
+int numSteves = 10;
 int numFoods = 10;
 
 Steve[] steves = new Steve[numSteves];
