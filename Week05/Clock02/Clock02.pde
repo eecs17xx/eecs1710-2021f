@@ -1,5 +1,4 @@
 float rotSeconds = 0;
-float rotSecondsLerp = -1;
 float rotMinutes = 0;
 float rotHours = 0;
 int lastSecond = 0;
@@ -7,7 +6,7 @@ int lastMinute = 0;
 int lastHour = 0;
 
 float faceSize = 500;
-float lengthSecondHand = 200;
+float lengthSecondHand = 220;
 float lengthMinuteHand = 200;
 float lengthHourHand = 100;
 
@@ -27,7 +26,6 @@ void draw() {
   
   if (s != lastSecond) {
     rotSeconds = ((float) s / 60) * TWO_PI;
-    if (rotSecondsLerp < 0) rotSecondsLerp = rotSeconds;
     lastSecond = s;
   }
   
@@ -52,14 +50,13 @@ void draw() {
     pushMatrix();
     translate(width/2, height/2);
     rotate(rot);
-    line(0, -faceSize/2, 0, faceSize/2);
+    line(0, faceSize/5, 0, faceSize/2);
     popMatrix();
   }
   
   pushMatrix();
   translate(width/2, height/2);
-  rotSecondsLerp = lerp(rotSecondsLerp, rotSeconds, 0.3);
-  rotate(rotSecondsLerp);
+  rotate(rotSeconds);
   fill(secondCol);
   stroke(secondCol);
   line(0, 0, 0, -lengthSecondHand);
