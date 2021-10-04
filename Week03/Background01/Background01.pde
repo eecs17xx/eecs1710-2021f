@@ -5,6 +5,7 @@ float speedX = 5;
 
 void setup() {
   size(800, 600, P2D);
+  frameRate(60);
   forest = loadImage("forest2.png");
   x = width/2;
   y = height/2;
