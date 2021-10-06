@@ -8,22 +8,15 @@ class Food {
     position = new PVector(x, y);
     sizeVal = random(10, 15);
   }
-  
-  void update() {
-    // TODO
-  }
-  
+ 
   void draw() {
-    if (alive) {
-      ellipseMode(CENTER);
-      noStroke();
-      fill(0);
-      ellipse(position.x, position.y, sizeVal, sizeVal);
-    }
+    ellipseMode(CENTER);
+    noStroke();
+    fill(0);
+    ellipse(position.x, position.y, sizeVal, sizeVal);
   }
   
   void run() {
-    update();
     draw();
   }
   

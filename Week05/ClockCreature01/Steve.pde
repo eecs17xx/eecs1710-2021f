@@ -1,7 +1,6 @@
 class Steve {
 
   SteveMode mode;
-  boolean debug = false;
   PVector position, target, mousePos;
   PImage faceCurrent, face01, face02, face03, face04;
   float margin = 50;
@@ -28,7 +27,8 @@ class Steve {
   float triggerDistance2 = 25;
   float movementSpeed = 0.08;
       
-  int hitPoints = 10;
+  int origHitPoints = 10;
+  int hitPoints = origHitPoints;
   int hitPointsMarkTime = 0;
   int hitPointsInterval = 1000;
   boolean alive = true;
@@ -76,7 +76,7 @@ class Steve {
     }
 
 
-    isBothered = position.dist(mousePos) < triggerDistance1;
+    isBothered = (hitPoints < 2 || position.dist(mousePos) < triggerDistance1);
     
     if (isBothered) {
       isHunting = false;
@@ -113,17 +113,26 @@ class Steve {
     }
     
     // found a Food
-    if (isHunting && foods.size() > 0 && position.dist(target) < 5) {
-      hitPoints++;
+    if (foods.size() > 0) {
+      Food food = foods.get(foodChoice);
+      target = food.position; // refresh target coordinates
       
-      foods.get(foodChoice).alive = false; 
-      pickFoodTarget();
+      if (food.alive && isHunting && position.dist(target) < 5) {
+        hitPoints++;  
+        food.alive = false; 
+        pickFoodTarget();
+      }
     }
     
     position.y += sin(t) / 2;
   }
   
-  void draw() {    
+  void draw() {
+    // begin tint if health is low
+    float hitPercent = (float) hitPoints / (float) origHitPoints;
+    hitPercent = constrain(hitPercent, 0, 1);
+    tint(255 * hitPercent, 255, 255 * hitPercent);
+    
     ellipseMode(CENTER);
     rectMode(CENTER);
     imageMode(CENTER);
@@ -138,6 +147,8 @@ class Steve {
     }
     popMatrix();
   
+    noTint();
+    
     if (debug) {
       noFill();
       stroke(0, 255, 0);
