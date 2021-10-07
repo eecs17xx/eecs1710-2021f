@@ -1,6 +1,8 @@
 class Steve {
-
-  PVector position, target; //, mousePos;
+  
+  int index;
+  PVector position;
+  Food target;
   PImage faceCurrent, face01, face02, face03, face04;
   float margin = 50;
   int foodChoice;
@@ -13,7 +15,7 @@ class Steve {
   
   boolean isBothered = false;
   int botheredMarkTime = 0;
-  int botheredTimeout = 3000; // Processing measures time in milliseconds
+  int botheredTimeout = 3000; 
   float botheredSpread = 5;
   
   boolean isBlinking = false;
@@ -25,10 +27,11 @@ class Steve {
   
   float triggerDistance1 = 100;
   float triggerDistance2 = 25;
-  float movementSpeed = 0.08;
+  float movementSpeedOrig = 0.04;
+  float movementSpeed = movementSpeedOrig;
       
-  int origHitPoints = 10;
-  int hitPoints = origHitPoints;
+  int hitPointsOrig = 10;
+  int hitPoints = hitPointsOrig;
   int hitPointsMarkTime = 0;
   int hitPointsInterval = 1000;
   int eatFoodValue = 1;
@@ -37,9 +40,9 @@ class Steve {
   boolean alive = true;
   
   // This is the constructor; it needs to have the same name as the class.
-  Steve(float x, float y) {       
+  Steve(float x, float y, int _index) {
+    index = _index;
     position = new PVector(x, y);
-    target = new PVector(width/2, height/2);
     pickFoodTarget();
 
     eyeL = new Eye(-45, -20, eyeSize);
@@ -55,11 +58,15 @@ class Steve {
     face04 = loadImage("face04.png");
     face04.resize(face01.width, face01.height);
     
-    faceCurrent = face01;    
+    faceCurrent = face01;       
   }
   
   void update() {
-    foodChoice = constrain(foodChoice, 0, foods.size()-1);
+    // if the food index no longer exists, pick another
+    if (foodChoice < 0 || foodChoice > foods.size()-1) pickFoodTarget();
+    
+    // movement speeds up as hit points decrease
+    movementSpeed = movementSpeedOrig / ((float) hitPoints / (float) hitPointsOrig);
     
     int t = millis();
     
@@ -70,12 +77,10 @@ class Steve {
         alive = false;
       }
     }
-    
-    //mousePos = new PVector(mouseX, mouseY);
-    
-    if (t > eyeMarkTime + eyeTimeout) {
+        
+    if (target != null && t > eyeMarkTime + eyeTimeout) {
       eyeMarkTime = t;
-      eyeAngle = atan2(target.y - position.y, target.x - position.x);
+      eyeAngle = atan2(target.position.y - position.y, target.position.x - position.x);
     }
 
 
@@ -108,18 +113,17 @@ class Steve {
         pickFoodTarget();
         isHunting = true;
       } else {
-        position = position.lerp(target, movementSpeed).add(new PVector(random(-botheredSpread, botheredSpread), random(-botheredSpread, botheredSpread)));
+        position = position.lerp(target.position, movementSpeed).add(new PVector(random(-botheredSpread, botheredSpread), random(-botheredSpread, botheredSpread)));
       }
     }
     
     // found a Food
     if (foods.size() > 0) {
-      Food food = foods.get(foodChoice);
-      target = food.position; // refresh target coordinates
+      target = foods.get(foodChoice);
       
-      if (food.alive && position.dist(target) < 5) {
+      if (target.alive && position.dist(target.position) < 5) {
         hitPoints += eatFoodValue;  
-        food.alive = false; 
+        target.alive = false; 
         pickFoodTarget();
       }
     }
@@ -129,7 +133,7 @@ class Steve {
   
   void draw() {
     // begin tint if health is low
-    float hitPercent = (float) hitPoints / (float) origHitPoints;
+    float hitPercent = (float) hitPoints / (float) hitPointsOrig;
     hitPercent = constrain(hitPercent, 0, 1);
     if (isBothered) {
       alphaVal = random(0, 255);
@@ -159,9 +163,9 @@ class Steve {
       stroke(0, 255, 0);
       ellipse(position.x, position.y, triggerDistance1*2, triggerDistance1*2);
       ellipse(position.x, position.y, triggerDistance2*2, triggerDistance2*2);
-      line(target.x, target.y, position.x, position.y);
+      line(target.position.x, target.position.y, position.x, position.y);
       stroke(255, 0, 0);
-      rect(target.x, target.y, 10, 10);
+      rect(target.position.x, target.position.y, 10, 10);
     }
   }
   
@@ -173,10 +177,7 @@ class Steve {
   void pickFoodTarget() {
     if (foods.size() > 0) {
       foodChoice = int(random(foods.size()));
-      Food food = foods.get(foodChoice);
-      if (food.alive) {
-        target = food.position;
-      }
+      target = foods.get(foodChoice);
     }
   }
   

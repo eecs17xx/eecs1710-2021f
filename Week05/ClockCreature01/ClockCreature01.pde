@@ -9,11 +9,11 @@ void setup() {
   noCursor();
   
   for (int i=0; i<numSteves; i++) {
-    steves.add(new Steve(random(width), random(height)));
+    steves.add(new Steve(random(width), random(height), i));
   }
   
   for (int i=0; i<numFoods; i++) {
-    foods.add(new Food(random(width), random(height)));
+    foods.add(new Food(random(width), random(height), i));
   }
 }
 
@@ -24,10 +24,15 @@ void draw() {
   for (int i=0; i<foods.size()-1; i++) {
     foods.get(i).run();
   }
-
+  
+  String steveReport = "";
   for (int i=0; i<steves.size()-1; i++) {
-    steves.get(i).run();
+    Steve steve = steves.get(i);
+    steve.run();
+    steveReport += steve.index + ". " + steve.hitPoints + "pts";
+    if (i < steves.size()-2) steveReport += ", ";
   }
+  println(steveReport);
 
   // then go backward through the arraylists to remove anything not alive
   for (int i=foods.size()-1; i>=0; i--) {
