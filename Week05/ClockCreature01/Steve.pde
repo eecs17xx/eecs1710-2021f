@@ -1,7 +1,6 @@
 class Steve {
 
-  SteveMode mode;
-  PVector position, target, mousePos;
+  PVector position, target; //, mousePos;
   PImage faceCurrent, face01, face02, face03, face04;
   float margin = 50;
   int foodChoice;
@@ -10,6 +9,7 @@ class Steve {
   int eyeMarkTime = 0;
   int eyeTimeout = 200;
   float eyeAngle = 0;
+  float alphaVal = 255;
   
   boolean isBothered = false;
   int botheredMarkTime = 0;
@@ -18,7 +18,7 @@ class Steve {
   
   boolean isBlinking = false;
   int blinkMarkTime = 0;
-  int blinkTimeout = 4000;
+  float blinkTimeout = 4000;
   int blinkDuration = 250;
   
   boolean isHunting = false;
@@ -31,17 +31,20 @@ class Steve {
   int hitPoints = origHitPoints;
   int hitPointsMarkTime = 0;
   int hitPointsInterval = 1000;
+  int eatFoodValue = 1;
+  int botheredFoodLevel = 2;
+  int neutralFoodLevel = 5;
   boolean alive = true;
   
   // This is the constructor; it needs to have the same name as the class.
-  Steve(float x, float y) {
-    mode = SteveMode.NEUTRAL;
-    
+  Steve(float x, float y) {       
     position = new PVector(x, y);
+    target = new PVector(width/2, height/2);
+    pickFoodTarget();
+
     eyeL = new Eye(-45, -20, eyeSize);
     eyeR = new Eye(45, -20, eyeSize);
-    
-    pickEscapeTarget();
+    blinkTimeout = random(blinkTimeout / 2, blinkTimeout * 1.5); // so they don't all blink at once
     
     face01 = loadImage("face01.png");
     face01.resize(face01.width/3, face01.height/3);
@@ -68,23 +71,20 @@ class Steve {
       }
     }
     
-    mousePos = new PVector(mouseX, mouseY);
+    //mousePos = new PVector(mouseX, mouseY);
     
     if (t > eyeMarkTime + eyeTimeout) {
       eyeMarkTime = t;
-      eyeAngle = atan2(mouseY - position.y, mouseX - position.x);
+      eyeAngle = atan2(target.y - position.y, target.x - position.x);
     }
 
 
-    isBothered = (hitPoints < 2 || position.dist(mousePos) < triggerDistance1);
+    isBothered = (hitPoints < botheredFoodLevel); // || position.dist(mousePos) < triggerDistance1);
     
     if (isBothered) {
       isHunting = false;
       botheredMarkTime = t;
       faceCurrent = face02; // worried expression
-      if (position.dist(target) < triggerDistance2) {
-        pickEscapeTarget();
-      }
     } else if (!isBothered && t > botheredMarkTime + botheredTimeout) {
       if (!isBlinking && t > blinkMarkTime + blinkTimeout) {
         isBlinking = true;
@@ -96,20 +96,20 @@ class Steve {
       if (isBlinking) {
         faceCurrent = face04; // blink with happy expression
       } else {
-        faceCurrent = face03; // happy expression
+        if (hitPoints < neutralFoodLevel) {
+          faceCurrent = face01; // neutral expression
+        } else {
+          faceCurrent = face03; // happy expression
+        }
       }   
       
       // Steve heads toward food if happy
       if (!isHunting) {
         pickFoodTarget();
         isHunting = true;
+      } else {
+        position = position.lerp(target, movementSpeed).add(new PVector(random(-botheredSpread, botheredSpread), random(-botheredSpread, botheredSpread)));
       }
-    } else if (!isBothered && t > botheredMarkTime + botheredTimeout/6) {
-      faceCurrent = face01; // neutral expression
-    }
-  
-    if (isBothered || isHunting) {
-      position = position.lerp(target, movementSpeed).add(new PVector(random(-botheredSpread, botheredSpread), random(-botheredSpread, botheredSpread)));
     }
     
     // found a Food
@@ -117,8 +117,8 @@ class Steve {
       Food food = foods.get(foodChoice);
       target = food.position; // refresh target coordinates
       
-      if (food.alive && isHunting && position.dist(target) < 5) {
-        hitPoints++;  
+      if (food.alive && position.dist(target) < 5) {
+        hitPoints += eatFoodValue;  
         food.alive = false; 
         pickFoodTarget();
       }
@@ -131,7 +131,12 @@ class Steve {
     // begin tint if health is low
     float hitPercent = (float) hitPoints / (float) origHitPoints;
     hitPercent = constrain(hitPercent, 0, 1);
-    tint(255 * hitPercent, 255, 255 * hitPercent);
+    if (isBothered) {
+      alphaVal = random(0, 255);
+    } else {
+      alphaVal = 255;
+    }
+    tint(255 * hitPercent, 255, 255 * hitPercent, alphaVal);
     
     ellipseMode(CENTER);
     rectMode(CENTER);
@@ -165,10 +170,6 @@ class Steve {
     draw();
   }
   
-  void pickEscapeTarget() {
-    target = new PVector(random(margin, width-margin), random(margin, height-margin));
-  }
-  
   void pickFoodTarget() {
     if (foods.size() > 0) {
       foodChoice = int(random(foods.size()));
@@ -179,11 +180,4 @@ class Steve {
     }
   }
   
-}
-
-enum SteveMode {
-  NEUTRAL,
-  BOTHERED,
-  HUNTING,
-  HAPPY
 }

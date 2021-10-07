@@ -6,6 +6,8 @@ boolean debug = false;
 
 void setup() {
   size(800, 600, P2D);
+  noCursor();
+  
   for (int i=0; i<numSteves; i++) {
     steves.add(new Steve(random(width), random(height)));
   }
@@ -17,7 +19,7 @@ void setup() {
 
 void draw() {
   background(127);
-  
+    
   // first go forward through the arraylists to run the game logic
   for (int i=0; i<foods.size()-1; i++) {
     foods.get(i).run();

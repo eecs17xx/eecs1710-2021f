@@ -1,6 +1,5 @@
 class Steve {
 
-  SteveMode mode;
   boolean debug = false;
   PVector position, target, mousePos;
   PImage faceCurrent, face01, face02, face03, face04;
@@ -29,9 +28,7 @@ class Steve {
   float movementSpeed = 0.08;
       
   // This is the constructor; it needs to have the same name as the class.
-  Steve(float x, float y) {
-    mode = SteveMode.NEUTRAL;
-    
+  Steve(float x, float y) {    
     position = new PVector(x, y);
     eyeL = new Eye(-45, -20, eyeSize);
     eyeR = new Eye(45, -20, eyeSize);
@@ -147,11 +144,4 @@ class Steve {
     }
   }
   
-}
-
-enum SteveMode {
-  NEUTRAL,
-  BOTHERED,
-  HUNTING,
-  HAPPY
 }
