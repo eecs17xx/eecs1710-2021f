@@ -25,8 +25,7 @@ class Steve {
   
   boolean isHunting = false;
   
-  float triggerDistance1 = 100;
-  float triggerDistance2 = 25;
+  float triggerDistance = 5;
   float movementSpeedOrig = 0.04;
   float movementSpeed = movementSpeedOrig;
       
@@ -58,7 +57,7 @@ class Steve {
     face04 = loadImage("face04.png");
     face04.resize(face01.width, face01.height);
     
-    faceCurrent = face01;       
+    faceCurrent = face01;      
   }
   
   void update() {
@@ -121,7 +120,7 @@ class Steve {
     if (foods.size() > 0) {
       target = foods.get(foodChoice);
       
-      if (target.alive && position.dist(target.position) < 5) {
+      if (target.alive && position.dist(target.position) < triggerDistance) {
         hitPoints += eatFoodValue;  
         target.alive = false; 
         pickFoodTarget();
@@ -161,8 +160,7 @@ class Steve {
     if (debug) {
       noFill();
       stroke(0, 255, 0);
-      ellipse(position.x, position.y, triggerDistance1*2, triggerDistance1*2);
-      ellipse(position.x, position.y, triggerDistance2*2, triggerDistance2*2);
+      ellipse(position.x, position.y, triggerDistance*2, triggerDistance*2);
       line(target.position.x, target.position.y, position.x, position.y);
       stroke(255, 0, 0);
       rect(target.position.x, target.position.y, 10, 10);

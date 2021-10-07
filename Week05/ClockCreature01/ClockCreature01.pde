@@ -21,12 +21,12 @@ void draw() {
   background(127);
     
   // first go forward through the arraylists to run the game logic
-  for (int i=0; i<foods.size()-1; i++) {
+  for (int i=0; i<foods.size(); i++) {
     foods.get(i).run();
   }
   
   String steveReport = "";
-  for (int i=0; i<steves.size()-1; i++) {
+  for (int i=0; i<steves.size(); i++) {
     Steve steve = steves.get(i);
     steve.run();
     steveReport += steve.index + ". " + steve.hitPoints + "pts";
