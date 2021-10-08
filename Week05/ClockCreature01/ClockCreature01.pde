@@ -4,6 +4,13 @@ ArrayList<Steve> steves = new ArrayList<Steve>();
 ArrayList<Food> foods = new ArrayList<Food>();
 boolean debug = false;
 
+int addFoodInterval = 500;
+int foodMarkTime = 0;
+
+int reproduceThreshold = 5;
+int reproduceMarkTime = 0;
+int reproduceInterval = 10000;
+
 void setup() {
   size(800, 600, P2D);
   noCursor();
@@ -13,11 +20,28 @@ void setup() {
   }
   
   for (int i=0; i<numFoods; i++) {
-    foods.add(new Food(random(width), random(height), i));
+    foods.add(new Food(random(width), random(height)));
   }
 }
 
 void draw() {
+  int t = millis();
+  
+  if (t > foodMarkTime + addFoodInterval) {
+    foods.add(new Food(random(width), random(height)));
+    foodMarkTime = t;
+  }
+  
+  if (t > reproduceMarkTime + reproduceInterval) {
+    for (int i=steves.size()-1; i>=0; i--) {
+      Steve steve = steves.get(i);
+      if (steve.hitPoints > reproduceThreshold) {
+        steves.add(new Steve(steve.position.x, steve.position.y, steves.size()-1));
+      }
+    }
+    reproduceMarkTime = t;
+  }
+  
   background(127);
     
   // first go forward through the arraylists to run the game logic
@@ -30,7 +54,7 @@ void draw() {
     Steve steve = steves.get(i);
     steve.run();
     steveReport += steve.index + ". " + steve.hitPoints + "pts";
-    if (i < steves.size()-2) steveReport += ", ";
+    if (i < steves.size()-1) steveReport += ", ";
   }
   println(steveReport);
 

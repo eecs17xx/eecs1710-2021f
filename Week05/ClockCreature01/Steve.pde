@@ -58,6 +58,8 @@ class Steve {
     face04.resize(face01.width, face01.height);
     
     faceCurrent = face01;      
+    
+    movementSpeedOrig = random(movementSpeedOrig/2, movementSpeedOrig*2);
   }
   
   void update() {

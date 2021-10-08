@@ -1,12 +1,10 @@
 class Food {
   
-  int index;
   PVector position;
   float sizeVal;
   boolean alive = true;
   
-  Food(float x, float y, int _index) {
-    index = _index;
+  Food(float x, float y) {
     position = new PVector(x, y);
     sizeVal = random(10, 15);
   }
