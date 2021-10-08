@@ -5,8 +5,9 @@ int timeLimit = 60;
 int currentTime = 0;
 int markTime = 0;
 int carInterval = 1000;
-float crashRange = 100;
-boolean debug = true;
+float crashRange = 80;
+boolean debug = false;
+color debugColor = color(255, 127, 0);
 
 PFont font;
 int fontSize = 48;
@@ -15,11 +16,13 @@ void setup() {
   size(800, 600, P2D);
   font = createFont("Arial", fontSize);
   textFont(font, fontSize);
-  player = new Player(width/2, height - 50);
+  player = new Player();
   cars = new ArrayList<Car>();
 }
 
 void draw() {
+  noStroke();
+  
   int t = millis();
   currentTime = abs(timeLimit - int(t/1000));
   
@@ -36,19 +39,24 @@ void draw() {
   
   for (Car car : cars) {
     car.run();
+    if (debug) {
+      stroke(debugColor);
+      line(car.position.x, car.position.y, player.position.x, player.position.y);
+    }
     if (player.position.dist(car.position) < crashRange) player.alive = false;
   }
   
   player.run();
   
-  if (debug) {
-    noFill();
-    stroke(0,255,0);
-    ellipse(player.position.x, player.position.y, crashRange*2, crashRange*2);
-  }
-  
   fill(255);
   text(currentTime, 10, fontSize);
+  
+  // clean up cars that have left the screen
+  for (int i=cars.size()-1; i>=0; i--) {
+    if (!cars.get(i).alive) {
+      cars.remove(i);
+    }
+  }
   
   surface.setTitle("" + frameRate);
 }

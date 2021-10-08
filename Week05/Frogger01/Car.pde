@@ -3,9 +3,10 @@ class Car {
   boolean isLeft;
   PVector position, target;
   color col = color(random(127)+127, random(127)+127, random(127)+127);
-  float movementSpeed = 0.05;
+  float movementSpeed = 0.01;
   float xMargin = 500;
   float yMargin = 150;
+  boolean alive = true;
   
   Car() {
     float pickSide = random(1);
@@ -26,12 +27,18 @@ class Car {
   
   void update() {
     position.lerp(target, movementSpeed);
+    if (position.dist(target) < 5) alive = false;
   }
   
   void draw() {
     rectMode(CENTER);
     fill(col);
     rect(position.x, position.y, 150, 40);
+    
+    if (debug) {
+      fill(debugColor);
+      ellipse(position.x, position.y, 10, 10);
+    }
   }
   
   void run() {

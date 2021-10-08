@@ -1,13 +1,19 @@
 class Player {
   
-  PVector position, target;
+  PVector startPosition, position, target;
   float movementStep = 50;
   float movementSpeed = 0.1;
   color col = color(127, 255, 10);
-  boolean alive = true;
+  boolean alive;
   
-  Player(float x, float y) {
-    position = new PVector(x, y);
+  Player() {
+    init();
+  }
+  
+  void init() {
+    alive = true;
+    startPosition = new PVector(width/2, height - 50);
+    position = startPosition.copy();
     target = position.copy();
   }
   
@@ -27,6 +33,12 @@ class Player {
       fill(255,0,0);
     }
     rect(position.x, position.y, 50, 100);
+    
+    if (debug) {
+      noFill();
+      stroke(debugColor);
+      ellipse(player.position.x, player.position.y, crashRange, crashRange);
+    }
   }
   
   void run() {
