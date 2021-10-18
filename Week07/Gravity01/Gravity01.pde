@@ -2,6 +2,7 @@ int numParticles = 1000;
 Particle[] particles = new Particle[numParticles];
 
 float gravity = 0.4;
+float gravityDelta = 0.01;
 float friction = 0.99;
 float floor;
 
@@ -21,7 +22,7 @@ void draw() {
     particles[i].run();
   }
   
-  gravity += 0.01;
+  gravity += gravityDelta;
   
   surface.setTitle("" + frameRate);
 }
