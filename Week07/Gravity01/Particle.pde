@@ -2,13 +2,19 @@ class Particle {
   
   PVector position;
   PVector speed;
+  int timestamp;
   
   Particle(float x, float y) {
     position = new PVector(x, y);
+    timestamp = millis();
+    speed = new PVector(random(-1, 1), random(-1, 2));
   }
   
   void update() {
-    // TODO
+    position.add(speed);
+    position.y += gravity;
+    speed.mult(friction);
+    position.y = constrain(position.y, 0, floor);
   }
   
   void draw() {
