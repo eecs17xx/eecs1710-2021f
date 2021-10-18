@@ -1,30 +1,29 @@
 class Bullet {
   
   PVector position;
-  PVector speed;
   float rot;
   int timestamp;
+  float velocity = 10;
+  boolean alive = true;
+  int lifetime = 1000;
   
   Bullet(float x, float y, float _rot) {
     position = new PVector(x, y);
     rot = _rot;
     timestamp = millis();
-    speed = new PVector(random(-0.1, 0.1), random(-2, -1));
   }
-  
+   
   void update() {
-    position.add(speed);
-    position.y += gravity;
-    speed.mult(friction);
-    position.y = constrain(position.y, 0, floor);
+    // https://www.emanueleferonato.com/2007/04/28/create-a-flash-artillery-game-step-1/
+    position.x += velocity * sin(radians(rot));
+    position.y -= velocity * cos(radians(rot));
+    
+    // set bullets past their lifetime as not alive so they can be removed
+    if (alive && millis() > timestamp + lifetime) alive = false;
   }
   
   void draw() {
-    pushMatrix();
-    translate(position.x, position.y);
-    rotate(radians(rot));
-    ellipse(0, 0, 10, 10);
-    popMatrix();
+    ellipse(position.x, position.y, 10, 10);
   }
   
   void run() {

@@ -16,4 +16,6 @@ void draw() {
   background(127);
     
   cannon.run();
+  
+  println("Number of bullets: " + cannon.bullets.size());
 }
