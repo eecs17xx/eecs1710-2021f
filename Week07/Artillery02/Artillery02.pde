@@ -11,6 +11,8 @@ int markTime = 0;
 boolean debug = true;
 color debugColor = color(255, 127, 0);
 
+PImage explosionImg;
+
 void setup() {
   size(800, 600, P2D);
   floor = height;
@@ -18,6 +20,10 @@ void setup() {
   cannon = new Cannon(width/2, height - 100);
   planes = new ArrayList<Enemy>();
   explosions = new ArrayList<Explosion>();
+
+  explosionImg = loadImage("explosion.png");
+  explosionImg.resize(256, 256);
+  imageMode(CENTER);
 }
 
 void draw() {
