@@ -22,7 +22,8 @@ class Explosion {
     popMatrix();
     noStroke();
     fill(random(255), random(255), 0);
-    ellipse(position.x, position.y, 100, 100);
+    float sizeVal = 100 + random(-50, 50);
+    ellipse(position.x, position.y, sizeVal, sizeVal);
   }
   
   void run() {

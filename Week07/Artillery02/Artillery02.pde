@@ -37,24 +37,24 @@ void draw() {
   }
     
   cannon.run();
-  
-  for (Enemy plane : planes) {
-    plane.run();
-  }
-  
-  for (Explosion explosion : explosions) {
-    explosion.run();
-  }
-  
-  // clean up "dead" objects
+    
+  // loop through arrays and clean up "dead" objects
   for (int i=planes.size()-1; i>=0; i--) {
-    if (!planes.get(i).alive) {
+    Enemy plane = planes.get(i);
+    
+    if (plane.alive) {
+      plane.run();
+    } else {
       planes.remove(i);
     }
   }
   
   for (int i=explosions.size()-1; i>=0; i--) {
-    if (!explosions.get(i).alive) {
+    Explosion explosion = explosions.get(i);
+    
+    if (explosion.alive) {
+      explosion.run();
+    } else {
       explosions.remove(i);
     }
   }
