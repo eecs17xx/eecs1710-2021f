@@ -1,20 +1,27 @@
 class Sprite {
   
   PVector position;
+  PVector scale;
   PImage[] frames;
   int currentFrame = 0;
   int markTime = 0;
-  int fps = 12;
-  int interval = 1000 / fps; 
+  int fps, interval;
   
-  Sprite(String _url, float _x, float _y) {
-    position = new PVector(_x, _y);
+  Sprite(String _url, int _fps, float _x, float _y) {
+    init(_fps, _x, _y);
     loadFrames(_url);
   }
 
-  Sprite(String _url, int _tileDimX, int _tileDimY, int _numTilesX, int _numTilesY, float _x, float _y) {
-    position = new PVector(_x, _y);
+  Sprite(String _url, int _fps, int _tileDimX, int _tileDimY, int _numTilesX, int _numTilesY, float _x, float _y) {
+    init(_fps, _x, _y);
     loadSpriteSheet(_url, _tileDimX, _tileDimY, _numTilesX, _numTilesY);
+  }
+  
+  void init(int _fps, float _x, float _y) {
+    position = new PVector(_x, _y);
+    fps = _fps;
+    interval = 1000 / fps; 
+    scale = new PVector(1, 1);
   }
   
   void update() {
@@ -28,6 +35,7 @@ class Sprite {
   void draw() {
     pushMatrix();
     translate(position.x, position.y);
+    scale(scale.x, scale.y);
     imageMode(CENTER);
     image(frames[currentFrame], 0, 0);
     popMatrix();

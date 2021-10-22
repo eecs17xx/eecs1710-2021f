@@ -1,7 +1,7 @@
-class Enemy {
+class Enemy extends Sprite {
   
   boolean isLeft;
-  PVector position, target;
+  PVector target;
   color col = color(random(127)+127, random(127)+127, random(127)+127);
   float movementSpeed = 0.01;
   float xMargin = 500;
@@ -9,12 +9,15 @@ class Enemy {
   boolean alive = true;
   PVector enemySize = new PVector(150, 40);
 
-  Enemy() {
+  Enemy() {   
+    super("enemy", 12, 0, 0);
+    
     float pickSide = random(1);
     float y = random(yMargin, height-yMargin*2);
     float x1, x2;
     if (pickSide < 0.5) {
       isLeft = true;
+      scale.x *= -1;
       x1 = -xMargin;
       x2 = width + xMargin;
     } else {
@@ -23,26 +26,28 @@ class Enemy {
       x2 = -xMargin;
     }
     position = new PVector(x1, y);  
+
     target = new PVector(x2, y);  
   }
   
   void update() {
+    super.update();
+    
     if (position.dist(target) < 5) alive = false;
     
     for (Bullet bullet : cannon.bullets) {
       if (alive && hitDetectRect(position, bullet.position, enemySize)) {
+        enemiesKilled++;
         alive = false;
         explosions.add(new Explosion(position.x, position.y));
       }
     }
     
-    if (alive) position.lerp(target, movementSpeed);
+    if (alive) position.lerp(target, movementSpeed);   
   }
   
   void draw() {
-    rectMode(CENTER);
-    fill(col);
-    rect(position.x, position.y, enemySize.x, enemySize.y);
+    super.draw();
     
     if (debug) {
       fill(debugColor);
@@ -52,10 +57,10 @@ class Enemy {
       stroke(debugColor);
       noFill();
       rect(position.x, position.y, enemySize.x, enemySize.y);
-    }
+    }    
   }
   
-  void run() {
+  void run() {    
     update();
     draw();
   }

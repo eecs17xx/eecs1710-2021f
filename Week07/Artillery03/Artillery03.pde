@@ -8,14 +8,21 @@ ArrayList<Enemy> planes;
 ArrayList<Explosion> explosions;
 int carInterval = 1000;
 int markTime = 0;
-boolean debug = true;
+boolean debug = false;
 color debugColor = color(255, 127, 0);
 
 PImage explosionImg;
 
+PFont font;
+int fontSize = 48;
+int enemiesKilled = 0;
+
 void setup() {
   size(800, 600, P2D);
   floor = height;
+  
+  font = createFont("Arial", fontSize);
+  textFont(font, fontSize);
   
   cannon = new Cannon(width/2, height - 100);
   planes = new ArrayList<Enemy>();
@@ -60,6 +67,9 @@ void draw() {
   }
   
   println("Number of bullets: " + cannon.bullets.size());
+  
+  fill(255);
+  text(enemiesKilled, 10, fontSize);
   
   surface.setTitle("" + frameRate);
 }
