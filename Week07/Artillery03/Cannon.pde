@@ -45,14 +45,38 @@ class Cannon {
     
     // rotating cannon
     pushMatrix(); 
+    // if the cannon is firing, offset its y position slightly
     if (armRecoil) {
       translate(position.x, position.y + recoilAmount);
-      armRecoil = false;
     } else {
       translate(position.x, position.y);
     }
     rotate(radians(rot));
+  
+    // if the cannon is firing, add a flash in a random colour
+    if (armRecoil) {
+      noStroke();
+      if (random(1) < 0.5) {
+        fill(255, 127, 0);
+      } else {
+        fill(0, 127, 255);
+      }
+      blendMode(ADD);
+      ellipse(0, -80, 30, 30);
+      blendMode(NORMAL);
+    }
+
     image(img1, 0, 0);
+    
+    // finally, if the cannon is firing, add one more flash, then turn the condition off.
+    if (armRecoil) {
+      blendMode(ADD);
+      float r = random(40, 80);
+      fill(255, 20);
+      ellipse(0, -80, r, r);
+      blendMode(NORMAL);
+      armRecoil = false;
+    }
     popMatrix();
     
     // front of base

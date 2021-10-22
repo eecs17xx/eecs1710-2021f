@@ -18,7 +18,9 @@ class Explosion {
     pushMatrix();
     translate(position.x, position.y);
     rotate(radians(random(360)));
+    blendMode(ADD);
     image(explosionImg, 0, 0);
+    blendMode(NORMAL);
     popMatrix();
     noStroke();
     fill(random(255), random(255), 0);
