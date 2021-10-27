@@ -40,6 +40,11 @@ class LetterGenerator {
     a.vertex(-43.739258, 220.41168);
     a.vertex(57.461426, 219.55405);
     a.vertex(177.53, 358.4906);
+    a.beginContour();
+    a.vertex(-40,180);
+    a.vertex(0, 60);
+    a.vertex(40,180);
+    a.endContour();
     a.endShape(CLOSE);
     
     b = createShape();
@@ -50,6 +55,16 @@ class LetterGenerator {
     b.vertex(202.40138, 230.70326);
     b.vertex(59.17667, 145.7976);
     b.vertex(204.97429, 24.871357);
+    b.beginContour();
+    b.vertex(40,120);
+    b.vertex(40, 30);
+    b.vertex(120, 50);
+    b.endContour();
+    b.beginContour();
+    b.vertex(30,260);
+    b.vertex(30, 180);
+    b.vertex(110, 230);
+    b.endContour();
     b.endShape(CLOSE);   
     
     c = createShape();

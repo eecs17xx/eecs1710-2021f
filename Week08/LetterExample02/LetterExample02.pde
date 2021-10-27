@@ -1,5 +1,5 @@
 LetterGenerator lg;
-String input = "abc";
+String input = "abcba";
 
 void setup() {
   size(800, 600, P2D);
@@ -9,7 +9,5 @@ void setup() {
 void draw() {
   background(127);
   
-  lg.run();
-  
-  ellipse(width/2, height/2, 10, 10);
+  lg.run(); 
 }
