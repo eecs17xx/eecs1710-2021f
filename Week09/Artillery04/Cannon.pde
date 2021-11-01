@@ -7,6 +7,9 @@ class Cannon {
   PImage img1, img2;
   boolean armRecoil = false;
   float recoilAmount = 4;
+  boolean ready = true;
+  int readyInterval = 150;
+  int markTime = 0;
   
   Cannon(float x, float y) {
     position = new PVector(x, y);
@@ -16,6 +19,8 @@ class Cannon {
   }
   
   void update() {
+    ready = millis() > markTime + readyInterval;
+    
     rot += rotDelta;    
     if (rot < -90 || rot > 90) rotDelta *= -1;  
     
@@ -31,13 +36,16 @@ class Cannon {
   }
   
   void fire() {
-    // adding a bit to the rotation is a "cheat"
-    // that makes it easier for the player to aim
-    bullets.add(new Bullet(position.x, position.y, rot + rotDelta * 2));
-    armRecoil = true;
-    
-    soundCannon.rate(random(0.8, 1.2));
-    soundCannon.jump(0);       
+    if (ready) {
+      markTime = millis();
+      // adding a bit to the rotation is a "cheat"
+      // that makes it easier for the player to aim
+      bullets.add(new Bullet(position.x, position.y, rot + rotDelta * 2));
+      armRecoil = true;
+      
+      soundCannon.rate(random(0.8, 1.2));
+      soundCannon.jump(0);   
+    }
   }
   
   void draw() {

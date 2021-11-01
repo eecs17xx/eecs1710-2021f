@@ -21,7 +21,7 @@ int enemiesKilled = 0;
 
 SoundFile soundCannon, soundExplosion;
 
-boolean fullAuto = false;
+boolean fullAuto = true;
 
 void setup() {
   size(800, 600, P2D);
