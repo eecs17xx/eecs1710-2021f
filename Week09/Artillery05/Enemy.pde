@@ -25,6 +25,15 @@ class Enemy extends Sprite {
       x1 = width + xMargin;
       x2 = -xMargin;
     }
+    
+    if (isLeft) {
+      soundEnemyLeft.rate(random(1.0, 1.2));
+      soundEnemyLeft.jump(0);
+    } else {
+      soundEnemyRight.rate(random(0.6, 0.8));
+      soundEnemyRight.jump(0);
+    }
+    
     position = new PVector(x1, y);  
 
     target = new PVector(x2, y);  
@@ -33,10 +42,25 @@ class Enemy extends Sprite {
   void update() {
     super.update();
     
+    float panVal = constrain(map(position.x, 0, width, -1, 1), -1, 1);
+    
+    if (isLeft) {
+      soundEnemyLeft.pan(panVal);
+      soundEnemyLeft.amp(panVal);
+    } else {
+      soundEnemyRight.pan(panVal);
+      soundEnemyRight.amp(panVal);
+    }
+    
     if (position.dist(target) < 5) alive = false;
     
     for (Bullet bullet : cannon.bullets) {
       if (alive && hitDetectRect(position, bullet.position, enemySize)) {
+        if (isLeft) {
+          soundEnemyLeft.pause();
+        } else {
+          soundEnemyRight.pause();
+        }
         enemiesKilled++;
         alive = false;
         explosions.add(new Explosion(position.x, position.y));

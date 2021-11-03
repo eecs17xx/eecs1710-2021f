@@ -19,7 +19,7 @@ PFont font;
 int fontSize = 48;
 int enemiesKilled = 0;
 
-SoundFile soundCannon, soundExplosion;
+SoundFile soundCannon, soundExplosion, soundEnemyLeft, soundEnemyRight;
 
 boolean fullAuto = true;
 
@@ -39,9 +39,13 @@ void setup() {
   imageMode(CENTER);
   
   soundCannon = new SoundFile(this, "sounds/cannon.wav");
-  soundCannon.cue(0); // preloads the sound
   soundExplosion = new SoundFile(this, "sounds/explosion.wav");
-  soundCannon.cue(0);
+  soundEnemyLeft = new SoundFile(this, "sounds/jet.wav");
+  soundEnemyLeft.loop();
+  soundEnemyLeft.cue(0);
+  soundEnemyRight = new SoundFile(this, "sounds/jet.wav");
+  soundEnemyRight.cue(0);
+  soundEnemyRight.loop();
 }
 
 void draw() {
