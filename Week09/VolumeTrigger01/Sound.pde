@@ -1,24 +1,20 @@
-import ddf.minim.*;
+import processing.sound.*;
 
-Minim minim;
-AudioInput in;
-int bufferSize = 512;
+Amplitude amplitude;
+AudioIn in;
 float amp = 0;
 
-void setupMinim() {
-  minim = new Minim(this);
-  in = minim.getLineIn(Minim.STEREO, bufferSize);
+void setupSound() {
+  amplitude = new Amplitude(this);
+  in = new AudioIn(this, 0);
+  in.start();
+  amplitude.input(in);
 }
 
-void stopMinim() {
-  in.close();
-  minim.stop();
+void updateSound() {
+  amp = getAmp();
 }
 
-void updateMinim() {
-  amp = getLevel();
-}
-
-float getLevel() {
-  return in.mix.level();
+float getAmp() {
+  return amplitude.analyze();
 }

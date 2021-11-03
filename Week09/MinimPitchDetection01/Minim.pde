@@ -40,7 +40,7 @@ float getFreq() {
   }
   
   // convert the value into Hz
-  return band * 0.5 * (float) in.sampleRate() / (float) in.bufferSize();
+  return band * 0.5 * (float) in.sampleRate() / (float) fft.specSize();
 }
 
 float getAmp() {

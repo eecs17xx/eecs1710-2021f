@@ -1,5 +1,5 @@
 float scaleAmp = 1000;
-float scaleFreq = 500;
+float scaleFreq = 1000;
 
 void setup() {
   size(800, 600, P2D);  
@@ -11,7 +11,6 @@ void draw() {
   
   updateMinim();
   
-  println(band + " " + fft.specSize());
   println("amp: " + amp + " freq: " + freq);
 
   rectMode(CENTER);

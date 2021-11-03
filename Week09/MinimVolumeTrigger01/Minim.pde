@@ -16,9 +16,9 @@ void stopMinim() {
 }
 
 void updateMinim() {
-  amp = getLevel();
+  amp = getAmp();
 }
 
-float getLevel() {
+float getAmp() {
   return in.mix.level();
 }

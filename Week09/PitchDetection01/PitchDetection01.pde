@@ -1,17 +1,16 @@
 float scaleAmp = 1000;
-float scaleFreq = 500;
+float scaleFreq = 1000;
 
 void setup() {
   size(800, 600, P2D);  
-  setupMinim();
+  setupSound();
 }
 
 void draw() {
   background(127);
   
-  updateMinim();
+  updateSound();
   
-  println(band + " " + fft.specSize());
   println("amp: " + amp + " freq: " + freq);
 
   rectMode(CENTER);
@@ -20,8 +19,4 @@ void draw() {
   float fillValB = constrain(map(freq, 0, scaleFreq, 0, 63), 0, scaleFreq);
   fill(fillValR, fillValG, fillValB);
   rect(width/2, height - (amp * scaleAmp), 250, amp * scaleAmp);
-}
-
-void exit() {
-  stopMinim();
 }

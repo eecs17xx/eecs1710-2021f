@@ -9,7 +9,7 @@ void setup() {
 void draw() {
   updateMinim();
   
-  float amp = getLevel();
+  float amp = getAmp();
   
   // using two thresholds instead of one makes for smoother transitions
   if (amp > maxThreshold) {

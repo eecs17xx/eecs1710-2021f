@@ -1,48 +1,48 @@
 // https://forum.processing.org/one/topic/microphone-pitch-detect.html
 // https://github.com/Notnasiul/R2D2-Processing-Pitch/blob/FFT/PitchProject/PitchDetectorFFT.pde
 
-import ddf.minim.*;
-import ddf.minim.analysis.*;
+import processing.sound.*;
 
-Minim minim;
-AudioInput in;
+Amplitude amplitude;
+AudioIn in;
 FFT fft;
-int bufferSize = 512;
+int specSize = 256;
+float sampleRate = 44100;
+float[] spectrum = new float[specSize];
 int band = 0;
 float amp = 0;
 float freq = 0;
 
-void setupMinim() {
-  minim = new Minim(this);
-  in = minim.getLineIn(Minim.STEREO, bufferSize);
-  fft = new FFT(in.bufferSize(), in.sampleRate());
+void setupSound() {
+  amplitude = new Amplitude(this);
+  fft = new FFT(this, specSize);
+  in = new AudioIn(this, 0);
+  in.start();
+  amplitude.input(in);
+  fft.input(in);
 }
 
-void stopMinim() {
-  in.close();
-  minim.stop();
-}
 
-void updateMinim() {
-  fft.forward(in.mix);
-
+void updateSound() {
   amp = getAmp();
   
   freq = getFreq();
 }
 
 float getFreq() {
+  fft.analyze(spectrum);
+  
   band = 0;
   
   // find frequency band with highest amplitude
-  for(int i = 0; i < fft.specSize(); i++) {   
-    if (fft.getBand(i) > fft.getBand(band)) band = i;
+  for(int i = 0; i < spectrum.length; i++) {   
+    if (spectrum[i] > spectrum[band]) band = i;
   }
   
   // convert the value into Hz
-  return band * 0.5 * (float) in.sampleRate() / (float) in.bufferSize();
+  return band * 0.5 * sampleRate / (float) specSize;
 }
 
 float getAmp() {
-  return in.mix.level();
+  return amplitude.analyze();
 }
