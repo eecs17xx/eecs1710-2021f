@@ -1,13 +1,9 @@
-/*
-https://florianschulz.info/stt/
-Simple WebSocketServer example that can receive voice transcripts from Chrome
-Requires WebSockets Library: https://github.com/alexandrainst/processing_websttSockets
-*/
-
 import websockets.*;
 
+// https://florianschulz.info/stt/
+
 WebsocketServer sttSocket;
-String sttMessage = "";
+String result = "";
 
 void setupSttReceiver() {
   sttSocket = new WebsocketServer(this, 1337, "/p5websocket");
@@ -18,6 +14,6 @@ void setupSttReceiver(int _port, String _channel) {
 }
 
 void webSocketServerEvent(String msg) {
-  sttMessage = msg;
-  println(msg);
+  result = msg.toLowerCase();
+  println(result);
 }

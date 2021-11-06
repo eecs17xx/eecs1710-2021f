@@ -1,6 +1,5 @@
 PImage castleImg, forestImg, villageImg, currentImg;
 String message = "";
-String result = "";
 PFont font;
 int fontSize = 20;
 color fontColor = color(255);
@@ -9,7 +8,8 @@ PVector textPos, shadowPos;
 
 void setup() {
   size(640,480, P2D);
-  
+  setupSttReceiver();
+
   font = createFont("Arial", fontSize);
   textFont(font);
   textAlign(CENTER);
@@ -23,11 +23,17 @@ void setup() {
 }
 
 void draw() {
-  if (result.toLowerCase().contains("castle")) {
+  if (result.contains("castle")) {
+    message = "castle";
+    result = "";
     currentImg = castleImg;
-  } else if (result.toLowerCase().contains("forest")) {
+  } else if (result.contains("forest")) {
+    message = "forest";
+    result = "";
     currentImg = forestImg;
-  } else if (result.toLowerCase().contains("village")) {
+  } else if (result.contains("village")) {
+    message = "village";
+    result = "";
     currentImg = villageImg;
   }
   
