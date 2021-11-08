@@ -28,11 +28,4 @@ void draw() {
   img.updatePixels();
   
   image(img, 0, 0);
-  
-  for (int i=0; i<1000; i++) {
-    int index4 = int(random(0, imgOrig.pixels.length));
-    int index5 = int(random(0, imgOrig.pixels.length));
-    imgOrig.pixels[index4] = imgOrig.pixels[index5];
-    imgOrig.updatePixels();
-  }
 }
