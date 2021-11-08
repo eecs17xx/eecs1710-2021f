@@ -3,12 +3,16 @@ class Dot {
   PVector position, target;
   color col;
   float speed;
+  float dotSize;
   
   Dot(float x, float y, color _col) {
     position = new PVector(x, y);
     target = new PVector(random(width), random(height));
     col = _col;
-    speed = brightness(col) / 100000;
+    
+    float b = brightness(col) / 255;
+    speed = b / 1000;
+    dotSize = abs(10 - (b * 10)) + 2;
   }
   
   void update() {
@@ -17,7 +21,7 @@ class Dot {
   
   void draw() {
     stroke(col);
-    strokeWeight(10);
+    strokeWeight(dotSize);
     point(position.x, position.y);
   }
   
