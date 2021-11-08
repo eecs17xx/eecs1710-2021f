@@ -1,31 +1,31 @@
 PImage img;
+ArrayList<Dot> dots;
+int scaler = 10; // will use only every 10th pixel from the image
 
 void setup() {
-  size(640, 480, P2D);  
+  size(50, 50, P2D);  
   img = loadImage("eggman.jpg");
+  surface.setSize(img.width, img.height);
+  
   img.loadPixels();
+  dots = new ArrayList<Dot>();
 
-  for (int x = 0; x < img.width; x++) {
-    for (int y = 0; y < img.height; y++) {
+  for (int x = 0; x < img.width; x += scaler) {
+    for (int y = 0; y < img.height; y += scaler) {
       // this translates x and y coordinates into a location in the pixels array
-      int loc = x + y * img.width;
+      int loc = x + y * (img.width);
       
-      if (y > img.height/2) {
-        img.pixels[loc] = color(0, 0, 255);
-      }
-      
-      if (x > img.width/2) {
-        float r = 255 - red(img.pixels[loc]);
-        float g = 0.4 * green(img.pixels[loc]);
-        float b = 0;
-        img.pixels[loc] = color(r, g, b);
-      }
+      dots.add(new Dot(x, y, img.pixels[loc]));
     }
   }
-
-  img.updatePixels();
 }
 
 void draw() { 
-  image(img, 0, 0);
+  background(127);
+  
+  for (Dot dot : dots) {
+    dot.run();
+  }
+  
+  surface.setTitle("" + frameRate);
 }
