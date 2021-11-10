@@ -10,8 +10,8 @@ class Dot {
     position = new PVector(x, y);
     col = _col;
     target = _target;
-    speed = 0.01;
-    dotSize = 10;
+    speed = 0.1;
+    dotSize = 40;
     ready = false;
   }
   
@@ -21,9 +21,10 @@ class Dot {
   }
   
   void draw() {
-    stroke(col);
-    strokeWeight(dotSize);
-    point(position.x, position.y);
+    ellipseMode(CENTER);
+    noStroke();
+    fill(col);
+    ellipse(position.x, position.y, dotSize, dotSize);
   }
   
   void run() {
