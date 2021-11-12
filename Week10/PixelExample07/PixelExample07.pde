@@ -7,7 +7,7 @@ void setup() {
   size(800, 600, P2D);
   spawn = new PVector(width/2, 10);
   player = new Dot(spawn.x, spawn.y, color(0, 127, 255), spawn);
-  terrain = loadImage("terrain.png");
+  terrain = loadImage("terrain2.png");
   terrain.loadPixels();
 }
 
