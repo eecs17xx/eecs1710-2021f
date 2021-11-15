@@ -1,12 +1,10 @@
-
 void setup() {
   size(800, 600, P2D);
   
-  //captureSetup(0);
-  movieSetup("cat.mp4");
+  // choose whether you're using a live capture, or a movie clip
+  captureSetup(0);
+  //movieSetup("cat.mp4");
 }
-
-int counter = 0;
 
 void draw() { 
   image(videoImg, 0, 0);

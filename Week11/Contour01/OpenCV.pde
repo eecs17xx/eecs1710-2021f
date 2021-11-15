@@ -1,69 +1,46 @@
-import processing.video.*;
 import gab.opencv.*;
 
-boolean liveCapture = true;
+OpenCV openCv;
+PShape ps;
 
-Movie movie;
-Capture capture;
-int whichCamera = 0;
-PImage videoImg;
-int videoWidth = 640;
-int videoHeight = 480;
-
-OpenCV opencv;
 ArrayList<Contour> contours;
-boolean armCvUpdate = false;
 int threshold = 127;
+float contourDetail = 2; // smaller values mean more detail
+boolean openCvReady = false;
 
-void opencvSetup() {
-  videoImg = createImage(videoWidth, videoHeight, RGB);
-  
-  if (liveCapture) {
-    String[] cameraNames = capture.list();
-    for (String cameraName : cameraNames) {
-      println(cameraName);
+void openCvSetup(PImage img) { 
+  openCv = new OpenCV(this, img);
+  openCvReady = true;
+  ps = createShape(GROUP);
+}
+
+void openCvRun(PImage img) {
+  if (armOpenCvUpdate) {
+    openCv.loadImage(img);
+    openCv.gray();
+    openCv.threshold(threshold);
+    contours = openCv.findContours();
+    
+    for (int i=ps.getChildCount()-1; i>=0; i--) {
+      ps.removeChild(i);
     }
-    capture = new Capture(this, videoWidth, videoHeight, cameraNames[whichCamera]); 
-    capture.start();
-  } else {
-    movie = new Movie(this, "cat.mp4");
-    movie.loop();
-    movie.volume(0);
+    
+    for (Contour contour : contours) {   
+      PShape child = createShape();
+      child.beginShape();
+      child.stroke(255, 0, 0);
+      child.noFill();
+      child.beginShape();
+      contour.setPolygonApproximationFactor(contourDetail);
+      for (PVector point : contour.getPolygonApproximation().getPoints()) {
+        child.vertex(point.x, point.y);
+      }
+      child.endShape();
+      ps.addChild(child);
+    }
+    
+    armOpenCvUpdate = false;
   }
   
-  opencv = new OpenCV(this, videoImg);
-}
-
-void opencvUpdate() {
-  if (armCvUpdate) {
-    opencv.loadImage(videoImg);
-    opencv.gray();
-    opencv.threshold(threshold);
-    contours = opencv.findContours();
-    armCvUpdate = false;
-  }
-}
-
-void opencvDraw() {
-  for (Contour contour : contours) {
-    stroke(255, 0, 0);
-    noFill();
-    beginShape();
-    for (PVector point : contour.getPolygonApproximation().getPoints()) {
-      vertex(point.x, point.y);
-    }
-    endShape();
-  }
-}
-
-void captureEvent(Capture c) {
-  c.read();
-  videoImg = c;
-  armCvUpdate = true;
-}
-
-void movieEvent(Movie m) {
-  m.read();
-  videoImg = m;
-  armCvUpdate = true;
+  if (ps != null) shape(ps);
 }

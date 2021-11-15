@@ -5,13 +5,14 @@ Capture capture;
 
 // both of the above objects will be drawing to the PImage videoImg
 PImage videoImg;
+boolean armOpenCvUpdate = false;
 
 void captureSetup(int whichCamera) {  
   String[] cameraNames = capture.list();
   for (String cameraName : cameraNames) {
     println(cameraName);
   }
-  capture = new Capture(this, cameraNames[whichCamera]);    
+  capture = new Capture(this, 320, 240, cameraNames[whichCamera]);    
   capture.start();
 }
 
@@ -24,9 +25,11 @@ void movieSetup(String movieUrl) {
 void captureEvent(Capture c) {
   c.read();
   videoImg = c;
+  armOpenCvUpdate = true;
 }
 
 void movieEvent(Movie m) {
   m.read();
   videoImg = m;
+  armOpenCvUpdate = true;
 }
