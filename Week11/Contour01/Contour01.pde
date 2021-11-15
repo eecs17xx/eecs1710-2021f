@@ -1,5 +1,5 @@
 void setup() {
-  size(800, 600, FX2D);
+  size(640, 480, FX2D);
   
   captureSetup(0);
   //movieSetup("cat.mp4");   
@@ -9,11 +9,15 @@ void setup() {
 void draw() {  
   background(0);
   
-  if (!openCvReady && videoImg != null) {
-    openCvSetup(videoImg);
-  } else {
-    openCvRun(videoImg);
+  if (videoImg != null) {
+    if (openCv == null) {
+      openCvSetup(videoImg);
+    } else {
+      openCvUpdate(videoImg);
+    }
   }
   
+  if (ps != null) shape(ps);
+
   surface.setTitle("" + frameRate);
 }

@@ -6,15 +6,14 @@ PShape ps;
 ArrayList<Contour> contours;
 int threshold = 127;
 float contourDetail = 2; // smaller values mean more detail
-boolean openCvReady = false;
+boolean armOpenCvUpdate = false;
 
 void openCvSetup(PImage img) { 
   openCv = new OpenCV(this, img);
-  openCvReady = true;
   ps = createShape(GROUP);
 }
 
-void openCvRun(PImage img) {
+void openCvUpdate(PImage img) {
   if (armOpenCvUpdate) {
     openCv.loadImage(img);
     openCv.gray();
@@ -33,14 +32,11 @@ void openCvRun(PImage img) {
       child.beginShape();
       contour.setPolygonApproximationFactor(contourDetail);
       for (PVector point : contour.getPolygonApproximation().getPoints()) {
+        point.mult(2);
         child.vertex(point.x, point.y);
       }
       child.endShape();
       ps.addChild(child);
     }
-    
-    armOpenCvUpdate = false;
   }
-  
-  if (ps != null) shape(ps);
 }
