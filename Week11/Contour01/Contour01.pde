@@ -7,17 +7,18 @@ void setup() {
 
 void draw() {  
   background(0);
+  scale(2.0);
   
   if (videoImg != null) {
     if (openCv == null) {
       openCvSetup(videoImg);
     } else {
       openCvUpdate(videoImg);
+      image(videoImg, 0, 0);
     }
   }
   
   if (ps != null) {
-    scale(2.0);
     shape(ps);
   }
   surface.setTitle("" + frameRate);

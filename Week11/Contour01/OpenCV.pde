@@ -8,8 +8,8 @@ int threshold = 33;
 float contourDetail = 1; // smaller values mean more detail
 boolean armOpenCvUpdate = false;
 float scaler = 2;
-float minContourArea = 50;
-float maxContourArea = 500;
+float minContourArea = 10;
+float maxContourArea = 11500;
 
 void openCvSetup(PImage img) { 
   openCv = new OpenCV(this, img);
@@ -28,37 +28,34 @@ void openCvUpdate(PImage img) {
     }
     
     for (Contour contour : contours) {   
-      PShape childPolygon = createShape();
-      childPolygon.beginShape();
-      childPolygon.stroke(255, 0, 0);
-      childPolygon.noFill();
-      childPolygon.beginShape();
-      contour.setPolygonApproximationFactor(contourDetail);
-      for (PVector point : contour.getPolygonApproximation().getPoints()) {
-        childPolygon.vertex(point.x, point.y);
-      }
-      childPolygon.endShape();
-      ps.addChild(childPolygon);
-      
       float area = contour.area();
       if (area > minContourArea && area < maxContourArea) {
-        PShape childCentroid = createShape();
-        childCentroid.beginShape(POINTS);
-        java.awt.Rectangle rect = contour.getBoundingBox();
-        PVector center = new PVector(rect.x + (rect.width/2), rect.y + rect.height/2);
-
-        childCentroid.stroke(255, 255, 0);
-        childCentroid.strokeWeight(2);        
-        childCentroid.vertex(rect.x, rect.y);
-        childCentroid.vertex(rect.width, rect.y);
-        childCentroid.vertex(rect.width, rect.height);
-        childCentroid.vertex(rect.x, rect.height);
-
-        childCentroid.stroke(0, 255, 0);
-        childCentroid.strokeWeight(5);
-        childCentroid.vertex(center.x, center.y);
-        childCentroid.endShape();
+        PShape childPolygon = createShape();
+        childPolygon.beginShape();
+        childPolygon.stroke(255, 0, 0);
+        childPolygon.noFill();
+        childPolygon.beginShape();
+        contour.setPolygonApproximationFactor(contourDetail);
+        for (PVector point : contour.getPolygonApproximation().getPoints()) {
+          childPolygon.vertex(point.x, point.y);
+        }
+        childPolygon.endShape(CLOSE);
+        ps.addChild(childPolygon);
         
+        java.awt.Rectangle rect = contour.getBoundingBox();
+        PShape childRect = createShape(RECT, rect.x, rect.y, rect.width, rect.height);
+        childRect.setStrokeWeight(1);        
+        childRect.setStroke(color(255, 255, 0));
+        childRect.setFill(false);
+        ps.addChild(childRect);
+        
+        PShape childCentroid = createShape();
+        PVector center = new PVector(rect.x + (rect.width/2), rect.y + (rect.height/2));
+        childCentroid.beginShape(POINTS);
+        childCentroid.stroke(0, 255, 0);
+        childCentroid.strokeWeight(3);
+        childCentroid.vertex(center.x, center.y);
+        childCentroid.endShape();       
         ps.addChild(childCentroid);
       }
     }
