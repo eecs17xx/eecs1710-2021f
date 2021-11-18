@@ -1,7 +1,7 @@
 void setup() {
   size(640, 480, FX2D);
 
-  captureSetup(0, 2);
+  setupCapture(0, 2);
   setupDenseOpticalFlow();
 }
 

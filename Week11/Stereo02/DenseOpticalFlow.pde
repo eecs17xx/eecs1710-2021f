@@ -6,6 +6,8 @@ import boofcv.struct.image.*;
 
 SimpleDenseOpticalFlow flow;
 PImage depth;
+boolean armUpdateL = false;
+boolean armUpdateR = false;
 
 void setupDenseOpticalFlow() {
   flow = Boof.flowHornSchunckPyramid(null, ImageDataType.F32);

@@ -1,15 +1,15 @@
 void setup() {
   size(640, 480, FX2D);
   
-  openCvSetup();
-  captureSetup(0, 2);
+  setupOpenCV();
+  setupCapture(0, 2);
 }
 
 void draw() { 
   image(imgL, 0, 0);
   image(imgR, imgL.width, 0);
   
-  openCvUpdate();
+  updateOpenCV();
   
   image(depth, imgL.width/2, imgL.height);
   

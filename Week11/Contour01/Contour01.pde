@@ -1,19 +1,19 @@
 void setup() {
   size(640, 480, FX2D);
   
-  captureSetup(0);
-  // movieSetup("cat.mp4");   
+  setupCapture(0);
+  // setupMovie("cat.mp4");   
 }
 
 void draw() {  
+  scale(2);
   background(0);
-  scale(2.0);
   
   if (videoImg != null) {
-    if (openCv == null) {
-      openCvSetup(videoImg);
+    if (openCV == null) {
+      setupOpenCV(videoImg);
     } else {
-      openCvUpdate(videoImg);
+      updateOpenCV(videoImg);
       image(videoImg, 0, 0);
     }
   }

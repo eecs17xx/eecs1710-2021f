@@ -1,6 +1,6 @@
 import gab.opencv.*;
 
-OpenCV openCv;
+OpenCV openCV;
 PShape ps;
 
 ArrayList<Contour> contours;
@@ -11,17 +11,17 @@ float scaler = 2;
 float minContourArea = 10;
 float maxContourArea = 11500;
 
-void openCvSetup(PImage img) { 
-  openCv = new OpenCV(this, img);
+void setupOpenCV(PImage img) { 
+  openCV = new OpenCV(this, img);
   ps = createShape(GROUP);
 }
 
-void openCvUpdate(PImage img) {
+void updateOpenCV(PImage img) {
   if (armOpenCvUpdate) {
-    openCv.loadImage(img);
-    openCv.gray();
-    openCv.threshold(threshold);
-    contours = openCv.findContours();
+    openCV.loadImage(img);
+    openCV.gray();
+    openCV.threshold(threshold);
+    contours = openCV.findContours();
     
     for (int i=ps.getChildCount()-1; i>=0; i--) {
       ps.removeChild(i);

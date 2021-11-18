@@ -11,8 +11,10 @@ PImage imgL, imgR, depth;
 Mat left, right, disparity, depthMat;
 StereoSGBM stereo;
 StereoBM stereo2;
+boolean armUpdateL = false;
+boolean armUpdateR = false;
 
-void openCvSetup() {  
+void setupOpenCV() {  
   imgL = createImage(videoWidth, videoHeight, RGB);
   imgR = createImage(videoWidth, videoHeight, RGB);
   depth = createImage(videoWidth, videoHeight, RGB);
@@ -23,30 +25,35 @@ void openCvSetup() {
   stereo2 = new StereoBM();
 }
 
-void openCvUpdate() {
-  ocvL.loadImage(imgL);
-  ocvR.loadImage(imgR);
-
-  ocvL.gray();
-  ocvR.gray();
+void updateOpenCV() {
+  if (armUpdateL && armUpdateR) {
+    ocvL.loadImage(imgL);
+    ocvR.loadImage(imgR);
   
-  left = ocvL.getGray();
-  right = ocvR.getGray();
-  disparity = OpenCV.imitate(left);
-  
-  if (useSBGM) {
-    stereo.compute(left, right, disparity);
-  
-    depthMat = OpenCV.imitate(left);
-    disparity.convertTo(depthMat, depthMat.type());
-      
-    ocvL.toPImage(depthMat, depth);
-  } else {
-    stereo2.compute(left, right, disparity );
+    ocvL.gray();
+    ocvR.gray();
     
-    depthMat = OpenCV.imitate(left);
-    disparity.convertTo(depthMat, depthMat.type());
+    left = ocvL.getGray();
+    right = ocvR.getGray();
+    disparity = OpenCV.imitate(left);
+    
+    if (useSBGM) {
+      stereo.compute(left, right, disparity);
+    
+      depthMat = OpenCV.imitate(left);
+      disparity.convertTo(depthMat, depthMat.type());
+        
+      ocvL.toPImage(depthMat, depth);
+    } else {
+      stereo2.compute(left, right, disparity );
+      
+      depthMat = OpenCV.imitate(left);
+      disparity.convertTo(depthMat, depthMat.type());
+    
+      ocvL.toPImage(depthMat, depth);
+    }
   
-    ocvL.toPImage(depthMat, depth);
+    armUpdateL = false;
+    armUpdateR = false;
   }
 }

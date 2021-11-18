@@ -6,7 +6,7 @@ Capture capture;
 // both of the above objects will be drawing to the PImage videoImg
 PImage videoImg;
 
-void captureSetup(int whichCamera) {  
+void setupCapture(int whichCamera) {  
   String[] cameraNames = capture.list();
   for (String cameraName : cameraNames) {
     println(cameraName);
@@ -15,7 +15,7 @@ void captureSetup(int whichCamera) {
   capture.start();
 }
 
-void movieSetup(String movieUrl) {  
+void setupMovie(String movieUrl) {  
   movie = new Movie(this, movieUrl);
   movie.loop();
   movie.volume(0);

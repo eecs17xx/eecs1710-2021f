@@ -1,20 +1,20 @@
 import gab.opencv.*;
 
-OpenCV openCv;
+OpenCV openCV;
 
 int threshold = 33;
 boolean armOpenCvUpdate = false;
 int scaler = 2;
 
-void openCvSetup(PImage img) { 
-  openCv = new OpenCV(this, img);
+void setupOpenCV(PImage img) { 
+  openCV = new OpenCV(this, img);
 }
 
-void openCvUpdate(PImage img) {
+void updateOpenCV(PImage img) {
   if (armOpenCvUpdate) {
-    openCv.loadImage(img);
-    openCv.gray();
-    openCv.threshold(threshold);
+    openCV.loadImage(img);
+    openCV.gray();
+    openCV.threshold(threshold);
     armOpenCvUpdate = false;
   }
 }

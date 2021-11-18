@@ -4,9 +4,8 @@ int videoWidth = 320;
 int videoHeight = 240;
 int videoFps = 30;
 PImage imgL, imgR;
-boolean armUpdateL, armUpdateR;
 
-void captureSetup(int whichCamera1, int whichCamera2) {  
+void setupCapture(int whichCamera1, int whichCamera2) {  
   String[] cameraNames = capture1.list();
   for (String cameraName : cameraNames) {
     println(cameraName);
@@ -18,9 +17,6 @@ void captureSetup(int whichCamera1, int whichCamera2) {
   
   imgL = createImage(videoWidth, videoHeight, RGB);
   imgR = createImage(videoWidth, videoHeight, RGB);
-  
-  armUpdateL = false;
-  armUpdateR = false;
 }
 
 void captureEvent(Capture c) {
