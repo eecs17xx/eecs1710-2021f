@@ -1,0 +1,3 @@
+void keyPressed() {
+  toggleBloom = !toggleBloom;
+}
