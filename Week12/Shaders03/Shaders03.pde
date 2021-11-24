@@ -1,8 +1,11 @@
 PShader shader_thresh, shader_rgba, shader_depth_color; 
 PGraphics buffer1, buffer2, buffer3;
+PImage img; 
 
 void setup() {
   size(800, 600, P2D);
+  img = loadImage("alien.jpg");
+  img.resize(width, height);
   
   setupCapture(0);
   
@@ -21,7 +24,7 @@ void setup() {
 }
 
 void draw() {
-  background(0,255,255);
+  image(img, 0, 0);
   
   shader_thresh.set("threshold", 255 * ((float) mouseX / (float) width)); 
   shader_thresh.set("tex0", videoImg);
@@ -41,4 +44,6 @@ void draw() {
   buffer3.endDraw();
   
   image(buffer3, 0, 0);
+  
+  surface.setTitle("" + frameRate);
 }

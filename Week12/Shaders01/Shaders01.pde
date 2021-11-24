@@ -16,4 +16,6 @@ void draw() {
   shader_thresh.set("threshold", 255 * ((float) mouseX / (float) width)); 
   shader_thresh.set("tex0", img);
   filter(shader_thresh);
+  
+  surface.setTitle("" + frameRate);
 }
