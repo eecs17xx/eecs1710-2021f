@@ -7,8 +7,7 @@ void setup() {
 
   shader = loadShader("example.glsl");
   shader.set("resolution", float(width), float(height));
-  shader.set("depth", 1.0);
-  shader.set("rate", 1.0);
+  shader.set("rate", 0.1);
 }
 
 void draw() {
