@@ -1,11 +1,12 @@
 uniform vec2 resolution;
 uniform float time;
 uniform float rate;
-uniform sampler2D texture;
+uniform sampler2D tex0;
 
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
-	vec2 v = (fragCoord.xy - (resolution * 0.5)) / min(resolution.y, resolution.x) * 10.0;
-	vec2 uv = fragCoord.xy / resolution.xy;
+void main() {
+	vec2 v = (gl_FragCoord.xy - (resolution * 0.5)) / min(resolution.y, resolution.x) * 10.0;
+	vec2 uv = gl_FragCoord.xy / resolution.xy;
+	vec2 uv2 = vec2(uv.x, abs(1.0 - uv.y));
 
 	float t = time * 0.3;
 	float r = 2.0;
@@ -17,11 +18,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 		v = vec2(v.x + cos(v.y + cos(r) + d) + cos(t), v.y - sin(v.x + cos(r) + d) + sin(t));
 	}
 
-	vec4 col = texture2D(texture, mix(uv, v, 0.01));
+	vec4 col = texture2D(tex0, mix(uv2, v, 0.01));
 
-	fragColor = col;
-}
-
-void main() {
-	mainImage(gl_FragColor, gl_FragCoord.xy);
+	gl_FragColor = col;
 }

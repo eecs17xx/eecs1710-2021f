@@ -6,7 +6,7 @@ void setup() {
   setupCapture(0);
   
   shader_thresh = loadShader("shaders/thresh.glsl");
-  shader_thresh.set("iResolution", float(width), float(height), 1.0);
+  shader_thresh.set("resolution", float(width), float(height), 1.0);
 }
 
 void draw() {

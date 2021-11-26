@@ -1,4 +1,4 @@
-uniform vec3 iResolution;
+uniform vec3 resolution;
 
 uniform sampler2D tex0;
 
@@ -13,15 +13,12 @@ vec4 threshFilter(vec3 v) {
     }
 }
 
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
-	vec2 uv = fragCoord.xy / iResolution.xy;
+void main() {
+	vec2 uv = gl_FragCoord.xy / resolution.xy;
 	vec2 uv2 = vec2(uv.x, abs(1.0 - uv.y));
 
 	vec4 col = threshFilter(texture2D(tex0, uv2).xyz);
 
-	fragColor = col;
+	gl_FragColor = col;
 }
 
-void main() {
-	mainImage(gl_FragColor, gl_FragCoord.xy);
-}

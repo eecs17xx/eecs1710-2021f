@@ -17,9 +17,9 @@ void setup() {
   shader_depth_color = loadShader("shaders/depth_color.glsl");
   shader_rgba = loadShader("shaders/rgba.glsl");
   
-  shader_thresh.set("iResolution", float(width), float(height), 1.0);
-  shader_depth_color.set("iResolution", float(width), float(height), 1.0);
-  shader_rgba.set("iResolution", float(width), float(height), 1.0);
+  shader_thresh.set("resolution", float(width), float(height), 1.0);
+  shader_depth_color.set("resolution", float(width), float(height), 1.0);
+  shader_rgba.set("resolution", float(width), float(height), 1.0);
   
 }
 

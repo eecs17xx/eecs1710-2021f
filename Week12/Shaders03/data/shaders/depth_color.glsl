@@ -1,4 +1,4 @@
-uniform vec3 iResolution;
+uniform vec3 resolution;
 
 uniform sampler2D tex0;
 
@@ -25,16 +25,12 @@ vec3 depthToColor(vec3 c) {
     return vec3(r2, g2, b2);
 }
 
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
-	vec2 uv = fragCoord.xy / iResolution.xy;
+void main() {
+	vec2 uv = gl_FragCoord.xy / resolution.xy;
 	vec2 uv2 = vec2(uv.x, abs(1.0 - uv.y));
-
 
 	vec4 col = vec4(depthToColor(texture2D(tex0, uv).xyz), 1.0);
 
-	fragColor = col;
+	gl_FragColor = col;
 }
 
-void main() {
-	mainImage(gl_FragColor, gl_FragCoord.xy);
-}

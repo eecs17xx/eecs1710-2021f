@@ -1,15 +1,12 @@
-uniform vec3 iResolution;
+uniform vec3 resolution;
 
-uniform sampler2D texture;
-
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
-	vec2 uv = fragCoord.xy / iResolution.xy;
-
-	vec4 col = texture2D(texture, uv);
-
-	fragColor = col;
-}
+uniform sampler2D tex0;
 
 void main() {
-	mainImage(gl_FragColor, gl_FragCoord.xy);
+	vec2 uv = gl_FragCoord.xy / resolution.xy;
+
+	vec4 col = texture2D(tex0, uv);
+
+	gl_FragColor = col;
 }
+

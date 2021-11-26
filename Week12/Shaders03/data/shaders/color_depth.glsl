@@ -1,4 +1,4 @@
-uniform vec3 iResolution;
+uniform vec3 resolution;
 
 uniform sampler2D tex0;
 
@@ -56,8 +56,8 @@ float map(float val, float min1, float max1, float min2, float max2) {
 	return perc * (max2 - min2) + min2;
 }
 
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
-	vec2 uv = fragCoord.xy / iResolution.xy;
+void main() {
+	vec2 uv = gl_FragCoord.xy / resolution.xy;
 	vec2 uv2 = vec2(uv.x, abs(1.0 - uv.y));
 
 	vec3 hslCol = rgb2hsl(texture2D(tex0, uv2).xyz);
@@ -68,10 +68,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 	depth = map(depth, 32.0/255.0, 200.0/255.0, 0.0, 1.0);
 	vec4 col = vec4(depth, depth, depth, 1.0); 
 
-	fragColor = col;
+	gl_FragColor = col;
 }
 
-void main() {
-	mainImage(gl_FragColor, gl_FragCoord.xy);
-}
+
 
