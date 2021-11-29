@@ -33,7 +33,6 @@ class Button {
   void update() {
     checkButton();
     drawButton();
-    
   }
 
   void checkButton() {
@@ -43,25 +42,21 @@ class Button {
         repeater=false;
         hovered=true;
         clicked=false;
-      } 
-      else if (mousePressed&&!repeater) {
+      } else if (mousePressed&&!repeater) {
         repeater=true;
         hovered=true;
         clicked=true;
         toggleSwitch = !toggleSwitch;
       }
     /*
-    } 
-    else if (hitDetect(x[1], y[1], kSize, kSize, posX, posY, sizeXY, sizeXY)||hitDetect(x[4], y[4], kSize, kSize, posX, posY, sizeXY, sizeXY)) {
+    } else if (hitDetect(x[1], y[1], kSize, kSize, posX, posY, sizeXY, sizeXY) || hitDetect(x[4], y[4], kSize, kSize, posX, posY, sizeXY, sizeXY)) {
       hovered=true;
       clicked=false;
-    } 
-    else if (hitDetect(x[0], y[0], kSize, kSize, posX, posY, sizeXY, sizeXY)&&hitDetect(x[4], y[4], kSize, kSize, posX, posY, sizeXY, sizeXY)) {
+    } else if (hitDetect(x[0], y[0], kSize, kSize, posX, posY, sizeXY, sizeXY) && hitDetect(x[4], y[4], kSize, kSize, posX, posY, sizeXY, sizeXY)) {
       hovered=true;
       clicked=true;
     */
-    } 
-    else {
+    } else {
       hovered=false;
       clicked=false;
     }
@@ -74,42 +69,40 @@ class Button {
     ellipseMode(CENTER);
     rectMode(CENTER);
     noStroke();
-    if (hovered&&!clicked) {
+    if (hovered && !clicked) {
       nowColor = hoverColor;
-    }
-    else if (hovered&&clicked) {
+    } else if (hovered && clicked) {
       nowColor = clickColor;
-    }
-    else if (!hovered&&!clicked) {
+    } else if (!hovered && !clicked) {
       nowColor = offColor;
     }
     fill(0, 10);
-    if(buttonType=="ellipse"){
-    ellipse(posX+2, posY+2, sizeXY, sizeXY);
-    }else{
-      rect(posX+2, posY+2, sizeXY, sizeXY);
+    if (buttonType == "ellipse") {
+    ellipse(posX + 2, posY + 2, sizeXY, sizeXY);
+    } else {
+      rect(posX + 2, posY + 2, sizeXY, sizeXY);
     }
     fill(nowColor);
-    if(buttonType=="ellipse"){
+    if (buttonType == "ellipse") {
       ellipse(posX, posY, sizeXY, sizeXY);
-    }else{
+    } else {
       rect(posX, posY, sizeXY, sizeXY);
     }
-    if(buttonType=="toggle"){
-    if(toggleSwitch){
-      pushMatrix();
-    translate(0-(sizeXY/2),0-(sizeXY/2));
-    stroke(0);
-    strokeWeight(2);
-    line(posX,posY,posX+sizeXY,posY+sizeXY);
-    line(posX+sizeXY,posY,posX,posY+sizeXY);
-    popMatrix();
-    }
+    if (buttonType == "toggle") {
+      if (toggleSwitch) {
+        pushMatrix();
+        translate(0 - (sizeXY / 2), 0 - (sizeXY / 2));
+        stroke(0);
+        strokeWeight(2);
+        line(posX, posY, posX + sizeXY, posY + sizeXY);
+        line(posX + sizeXY, posY, posX, posY + sizeXY);
+        popMatrix();
+      }
     }
     fill(0);
     textFont(font, fontSize);
     textAlign(CENTER, CENTER);
-    text(label, posX, posY-(fontSize/4));
+    text(label, posX, posY - (fontSize / 4));
   }
 
   boolean hitDetect(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2) {
