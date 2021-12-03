@@ -31,6 +31,7 @@ ArrayList<String> getGifUrls(String query, int maxGifResults) {
   ArrayList<String> returns = new ArrayList<String>();
   String queryUrl = apiUrl + "&api_key=" + apiKey + "&q=" + query;
   JSONObject json = loadJSONObject(queryUrl);
+  //println(json); // uncomment this to see what the json being returned looks like
   JSONArray data = json.getJSONArray("data");
   
   for (int i=0; i<data.size(); i++) {
