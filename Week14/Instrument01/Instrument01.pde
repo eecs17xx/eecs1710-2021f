@@ -1,3 +1,5 @@
+PShader shader;
+
 ArrayList<Stroke> strokes;
 int marktime = 0;
 int timeout = 1000;
@@ -7,6 +9,10 @@ void setup() {
   setupXYscope();
   
   strokes = new ArrayList<Stroke>();
+
+  shader = loadShader("example.glsl");
+  shader.set("resolution", float(width), float(height));
+  shader.set("rate", 0.1);
 }
 
 void draw() {
@@ -23,4 +29,10 @@ void draw() {
   if (millis() > marktime + timeout) {
     xy.clearWaves();
   }
+
+  shader.set("time", float(millis())/1000.0);
+  shader.set("tex0", get());
+  filter(shader);
+
+  surface.setTitle("" + frameRate);
 }
