@@ -18,7 +18,7 @@ void main() {
 		v = vec2(v.x + cos(v.y + cos(r) + d) + cos(t), v.y - sin(v.x + cos(r) + d) + sin(t));
 	}
 
-	vec4 col1 = texture2D(tex0, uv2);
+	vec4 col1 = texture2D(tex0, uv);
 	vec4 col2 = texture2D(tex0, mix(uv2, v, 0.005));
 
 	gl_FragColor = mix(col2, col1, 0.5);
